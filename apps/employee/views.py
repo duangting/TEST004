@@ -19,7 +19,8 @@ class employee_view(APIView):
         serializer=serializers_Employee(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return  Response(serializer.data,status=status.HTTP_200_OK)
+            print(serializer.data)
+            return  Response({"msg":"请求成功",'code':'201'},status=status.HTTP_200_OK)
         return Response(serializer.error_messages,status=status.HTTP_404_NOT_FOUND)
 
 

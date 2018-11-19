@@ -5,7 +5,7 @@ from django.db import models
 
 class Employee(models.Model):
 
-    id=models.IntegerField(primary_key=True,verbose_name='id')
+    id=models.AutoField(primary_key=True,verbose_name='id')
     name=models.CharField(max_length=10,verbose_name='姓名')
     sex=models.CharField(max_length=10,verbose_name='性别')
     email=models.EmailField(max_length=30,verbose_name='邮箱')
