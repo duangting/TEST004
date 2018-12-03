@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.pagination import PageNumberPagination
@@ -23,15 +24,28 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class employee_viewsets(viewsets.ModelViewSet):
+class employee_viewsets(mixins.RetrieveModelMixin,
+                        mixins.ListModelMixin, viewsets.GenericViewSet,
+                        mixins.CreateModelMixin,
+                        ):
     queryset = Employee.objects.all()
     serializer_class = serializers_Employee
     pagination_class = StandardResultsSetPagination
 
-class employee_viewset001(viewsets.ModelViewSet):
-    queryset = Employee.objects.filter(name='weqr').order_by('-id')
+
+class employee_viewset001(viewsets.GenericViewSet,
+                          mixins.ListModelMixin,
+                          mixins.CreateModelMixin
+                          ):
+    queryset = Employee.objects.all()
     serializer_class = serializers_Employee
     pagination_class = StandardResultsSetPagination
+    #pagination_class = StandardResultsSetPagination
+    # 使用过滤器
+    filter_backends = (DjangoFilterBackend,)
+    # 定义需要使用过滤器的字段
+    filter_fields = ('email', 'name')
+
 
 # class employee_view(
 # ListAPIView,
