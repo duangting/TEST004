@@ -1,17 +1,15 @@
-from django.shortcuts import render
-
-# Create your views here.
+import requests
+from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status
-from rest_framework.generics import ListAPIView, CreateAPIView
+
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.views import View
 
 from .models import Employee
 from .serializers import serializers_Employee
+from .serializers import serializers_Employee001
 from rest_framework import mixins
-from rest_framework import generics
+
 from rest_framework import viewsets
 
 
@@ -45,6 +43,22 @@ class employee_viewset001(viewsets.GenericViewSet,
     filter_backends = (DjangoFilterBackend,)
     # 定义需要使用过滤器的字段
     filter_fields = ('email', 'name')
+    # fields='__all__'
+
+class employee001_viewset(viewsets.GenericViewSet,
+                          mixins.ListModelMixin,
+                          mixins.CreateModelMixin
+                          ):
+    queryset = Employee.objects.all()
+    serializer_class = serializers_Employee001
+    pagination_class = StandardResultsSetPagination
+    # 使用过滤器
+    filter_backends = (DjangoFilterBackend,)
+    # 定义需要使用过滤器的字段
+    filter_fields = ('email',)
+
+
+
 
 
 # class employee_view(
